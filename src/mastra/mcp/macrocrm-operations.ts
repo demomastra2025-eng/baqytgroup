@@ -1,0 +1,4430 @@
+// Auto-generated from openapiMacroCRM.json on 2025-10-29T08:21:27.313Z.
+// Contains static MacroCRM operations for MCP server without runtime OpenAPI dependency.
+export interface MacroCrmOperationSpec {
+  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'HEAD';
+  path: string;
+  summary: string;
+  description: string;
+  tags: string[];
+  parameters: any[];
+  requestBody: any;
+  responses: Record<string, any>;
+}
+
+export const MACROCRM_OPERATIONS: MacroCrmOperationSpec[] = [
+  {
+    "method": "POST",
+    "path": "/resource/method",
+    "summary": "Пример запроса для всех методов",
+    "description": "Так же коды, которые могут вернуть все методы",
+    "tags": [
+      "Auth"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Требуется параметр phone"
+                }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Доступ запрещен",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied to action"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/company/getAdvertisingChannels",
+    "summary": "Получение списка рекламных каналов",
+    "description": "",
+    "tags": [
+      "Company"
+    ],
+    "parameters": [],
+    "requestBody": null,
+    "responses": {
+      "200": {
+        "description": "Список рекламных каналов, заданных в аккаунте",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "channels": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "ID канала"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Название"
+                      },
+                      "is_archived": {
+                        "type": "boolean",
+                        "description": "В архиве"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/company/getDepartments",
+    "summary": "Получение списка отделов компании",
+    "description": "",
+    "tags": [
+      "Company"
+    ],
+    "parameters": [],
+    "requestBody": null,
+    "responses": {
+      "200": {
+        "description": "Список отделов компании",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "departments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "ID отдела"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Название"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Тип отдела"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/company/getUsers",
+    "summary": "Получение списка пользователей компании",
+    "description": "",
+    "tags": [
+      "Company"
+    ],
+    "parameters": [],
+    "requestBody": null,
+    "responses": {
+      "200": {
+        "description": "Список пользователей компании",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "users": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "ID пользователя"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Имя пользователя"
+                      },
+                      "department_id": {
+                        "type": "integer",
+                        "description": "ID отдела к которому относится пользователь"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estate/price/change",
+    "summary": "Изменение цен на недвижимость",
+    "description": "Изменяет цены на указанные объекты недвижимости. Для каждого объекта требуется либо price либо price_m2",
+    "tags": [
+      "EstatePrice"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "prices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "estate_id": {
+                      "type": "integer",
+                      "example": 7135214
+                    },
+                    "price": {
+                      "type": "integer",
+                      "example": 3500000
+                    },
+                    "price_m2": {
+                      "type": "integer",
+                      "example": 70000
+                    },
+                    "comment": {
+                      "type": "string",
+                      "example": "Просто коммент"
+                    }
+                  }
+                }
+              },
+              "setSearch": {
+                "type": "boolean",
+                "description": "Вернуть в подбор, если квартира в статусе \"Маркетинговый резерв\""
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "changes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "estate_id": {
+                        "type": "integer",
+                        "example": 7135214
+                      },
+                      "price": {
+                        "type": "integer",
+                        "example": 3500000
+                      },
+                      "price_m2": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 65789.47
+                      },
+                      "status": {
+                        "type": "integer",
+                        "example": 20
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estatePrices/createProject",
+    "summary": "Создание проекта изменения цен на недвижимость",
+    "description": "В настоящий момент поддерживается только создание цен с прямым указанием новой цены по каждому объекту\n",
+    "tags": [
+      "EstatePrice"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": [
+              "estate_id",
+              "category",
+              "prices_changes"
+            ],
+            "properties": {
+              "estate_id": {
+                "type": "integer",
+                "description": "ID дома/комплекса, к которому привязывается проект",
+                "example": 12345
+              },
+              "category": {
+                "type": "string",
+                "description": "Категория объектов недвижимости",
+                "enum": [
+                  "flat",
+                  "garage",
+                  "comm",
+                  "storageroom",
+                  "land"
+                ],
+                "example": "flat"
+              },
+              "prices_changes": {
+                "type": "object",
+                "description": "Массив изменений цен по объектам (estate_id => new_price)",
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "example": {
+                  "7135214": 3500000,
+                  "7135215": 4200000,
+                  "7135216": 2800000
+                }
+              },
+              "description": {
+                "type": "string",
+                "description": "Описание проекта (комментарий)",
+                "example": "Корректировка цен после анализа рынка"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Проект успешно создан",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "project": {
+                  "type": "object",
+                  "description": "Созданный проект изменения цен",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 12345
+                    },
+                    "estate_id": {
+                      "type": "integer",
+                      "example": 12345
+                    },
+                    "category": {
+                      "type": "string",
+                      "example": "flat"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "price_delta": {
+                      "type": "number",
+                      "example": 150000
+                    },
+                    "estates_count": {
+                      "type": "integer",
+                      "example": 3
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2025-08-22T17:30:00Z"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка валидации параметров",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "string",
+                  "examples": {
+                    "missing_estate_id": {
+                      "value": "Параметр estate_id обязателен"
+                    },
+                    "missing_category": {
+                      "value": "Параметр category обязателен"
+                    },
+                    "missing_prices_changes": {
+                      "value": "Параметр prices_changes обязателен"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Ошибка доступа",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "string",
+                  "examples": {
+                    "not_found": {
+                      "value": "Объект недвижимости с указанным ID не найден"
+                    },
+                    "access_denied": {
+                      "value": "Доступ к объекту недвижимости запрещен"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "string",
+                  "example": "Ошибка создания проекта изменения цен"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estateBuy/create",
+    "summary": "Создание заявки на покупку недвижимости",
+    "description": "",
+    "tags": [
+      "EstateBuy"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": [
+              "name",
+              "phone"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Имя контакта",
+                "example": "Иван Иванов"
+              },
+              "phone": {
+                "type": "string",
+                "description": "Телефон контакта (можно передавать несколько через запятую)",
+                "example": "+7 (999) 123-45-67"
+              },
+              "email": {
+                "type": "string",
+                "description": "Email контакта (можно передавать несколько через запятую)",
+                "example": "example@domain.com"
+              },
+              "message": {
+                "type": "string",
+                "description": "Сообщение от клиента",
+                "example": "Интересует приобретение двухкомнатной квартиры"
+              },
+              "action": {
+                "type": "string",
+                "description": "Тип действия:\n- buy - заявка на покупку\n- sell - заявка на продажу\n- callback - запрос обратного звонка; если передан номер телефона, то будет осуществлена попытка связать клиента со случайным менеджером колл-центра, находящимся \"онлайн\"\n- question - подача вопроса от посетителя сайта; вопрос будет добавлен к заметкам заявки; обязательна передача вопроса в параметре message\n- reserve - заявка на бронь; обязателен параметр estate_sell_id, при этом создаваемый лид будет связан с указанным объектом недвижимости\n- askprice - запрос информации о цене; после получения лида клиенту будет выслано письмо с презентацией объекта; обязателен параметр estate_sell_id, при этом создаваемый лид будет связан с указанным объектом недвижимости\n- meet - запрос на встречу; добавление задачи с типом «Встреча в офисе»; если у клиента отсутствуют заявки, то будет создана в том числе и заявка; обязательны параметры manager_id и meet_date\n- lead - базовое действие для отправки заявки\n- rate - заявка на оценку\n",
+                "enum": [
+                  "lead",
+                  "question",
+                  "callback",
+                  "reserve",
+                  "sell",
+                  "buy",
+                  "rate",
+                  "askprice",
+                  "meet"
+                ],
+                "default": "buy",
+                "example": "buy"
+              },
+              "estate_sell_id": {
+                "type": "integer",
+                "description": "ID объекта недвижимости, если заявка привязана к конкретному объекту",
+                "example": 1234
+              },
+              "category": {
+                "type": "string",
+                "description": "Категория недвижимости",
+                "example": "newflat"
+              },
+              "manager_id": {
+                "type": "integer",
+                "description": "ID менеджера, если требуется назначить заявку конкретному менеджеру",
+                "example": 567
+              },
+              "meet_date": {
+                "type": "string",
+                "description": "Дата встречи (требуется при action=meet)",
+                "example": "01.01.2024"
+              },
+              "tags": {
+                "description": "Теги заявки. Можно передавать одной строкой через запятую, массивом названий или массивом ID тегов компании",
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "example": "Ипотека, Молодая семья"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "Ипотека",
+                      "Молодая семья"
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "example": [
+                      101,
+                      205
+                    ]
+                  }
+                ]
+              },
+              "status_custom": {
+                "type": "integer",
+                "description": "ID кастомного подстатуса для статуса \"Проверка\". Используется только в паре с параметром manager_id",
+                "example": 123
+              },
+              "estate_buy_housesInterest": {
+                "type": "array",
+                "description": "ID дома или массив с ID домов. При передаче параметра заявке будет присвоен интерес к указанным домам",
+                "items": {
+                  "type": "integer"
+                },
+                "example": [
+                  123456,
+                  654321
+                ]
+              },
+              "estate_living_buy_clause": {
+                "type": "string",
+                "description": "Источник денег для покупки:\n- 1 - Ипотека\n- 2 - Наличные\n- 3 - Продажа своего имущества\n- 4 - Мат.капитал\n- 5 - Обмен (Трейд-ин)\n- 6 - Другие субсидии (воен., многодет. и др.)\n- 7 - Зачет\n- 8 - Рассрочка\n",
+                "example": "1"
+              },
+              "estate_customer_desire": {
+                "type": "string",
+                "description": "Приоритет:\n- none = Не установлено\n- cold = Холодный\n- warm = Теплый\n- hot = Горячий\n",
+                "example": "1"
+              },
+              "reserve_summa": {
+                "type": "number",
+                "format": "float",
+                "description": "Сумма платной брони (при action=reserve и включенной настройке платной брони)",
+                "example": 50000
+              },
+              "domain": {
+                "type": "string",
+                "description": "Домен, с которого поступила заявка, для применения специфических настроек домена",
+                "example": "example.com"
+              },
+              "is_allow_sms": {
+                "type": "integer",
+                "description": "Согласие на SMS уведомления",
+                "enum": [
+                  0,
+                  1
+                ],
+                "example": 1
+              },
+              "is_allow_email": {
+                "type": "integer",
+                "description": "Согласие на Email уведомления",
+                "enum": [
+                  0,
+                  1
+                ],
+                "example": 1
+              },
+              "is_allow_call": {
+                "type": "integer",
+                "description": "Согласие на Звонки",
+                "enum": [
+                  0,
+                  1
+                ],
+                "example": 1
+              },
+              "is_allow_personal_data": {
+                "type": "integer",
+                "description": "Согласие на обработку персональных данных",
+                "enum": [
+                  0,
+                  1
+                ],
+                "example": 1
+              },
+              "utm": {
+                "type": "object",
+                "description": "UTM-метки",
+                "properties": {
+                  "channel_medium": {
+                    "type": "string",
+                    "description": "Канал заявки",
+                    "example": "website"
+                  },
+                  "channel_type": {
+                    "type": "string",
+                    "description": "Тип канала",
+                    "example": "www"
+                  },
+                  "utm_source": {
+                    "type": "string",
+                    "description": "Источник трафика",
+                    "example": "yandex"
+                  },
+                  "utm_medium": {
+                    "type": "string",
+                    "description": "Тип рекламного канала",
+                    "example": "cpc"
+                  },
+                  "utm_campaign": {
+                    "type": "string",
+                    "description": "Название рекламной кампании",
+                    "example": "spring_promo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "estate": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "ID созданной заявки",
+                      "example": 4321
+                    }
+                  }
+                },
+                "contact": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "ID контакта",
+                      "example": 1234
+                    }
+                  }
+                },
+                "contact_created": {
+                  "type": "boolean",
+                  "description": "Признак того, что контакт был создан в рамках этого запроса",
+                  "example": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка в запросе",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Текст ошибки",
+                  "example": "Missing required param: name"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Системная ошибка",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Текст ошибки",
+                  "example": "System error: database connection failed"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estateBuy/find",
+    "summary": "Поиск заявок контакта",
+    "description": "",
+    "tags": [
+      "EstateBuy"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "contacts_id": {
+                "type": "integer",
+                "description": "Идентификатор контакта, для поиска заявок"
+              }
+            },
+            "required": [
+              "contacts_id"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Результат поиска",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "buys": {
+                  "type": "array",
+                  "description": "Список активных заявок",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "Идентификатор заявки"
+                      },
+                      "company_id": {
+                        "type": "integer",
+                        "description": "Идентификатор компании"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Тип объекта недвижимости"
+                      },
+                      "category": {
+                        "type": "string",
+                        "description": "Категория объекта недвижимости"
+                      },
+                      "manager_id": {
+                        "type": "integer",
+                        "description": "Идентификатор менеджера, ответственного за заявку"
+                      },
+                      "status": {
+                        "type": "integer",
+                        "description": "Идентификатор статуса заявки"
+                      },
+                      "status_custom": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Кастомный статус заявки"
+                      },
+                      "date_added": {
+                        "type": "integer",
+                        "description": "Дата добавления заявки (timestamp)"
+                      },
+                      "date_modified": {
+                        "type": "integer",
+                        "description": "Дата последнего изменения заявки (timestamp)"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "description": "Теги, привязанные к заявке",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "description": "ID тега"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "Название тега"
+                            }
+                          }
+                        }
+                      },
+                      "utm": {
+                        "type": "object",
+                        "description": "Информация об источниках трафика",
+                        "properties": {
+                          "utm_history": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "История UTM-меток"
+                          },
+                          "utm_keyword": {
+                            "type": "string",
+                            "description": "Ключевое слово"
+                          },
+                          "utm_term": {
+                            "type": "string",
+                            "description": "Условие поиска"
+                          },
+                          "utm_source": {
+                            "type": "string",
+                            "description": "Источник трафика"
+                          },
+                          "utm_medium": {
+                            "type": "string",
+                            "description": "Тип трафика"
+                          },
+                          "utm_campaign": {
+                            "type": "string",
+                            "description": "Название кампании"
+                          },
+                          "utm_position_type": {
+                            "type": "string",
+                            "description": "Тип позиции"
+                          },
+                          "utm_block": {
+                            "type": "string",
+                            "description": "Блок"
+                          },
+                          "utm_position": {
+                            "type": "string",
+                            "description": "Позиция"
+                          },
+                          "utm_campaign_id": {
+                            "type": "string",
+                            "description": "ID кампании"
+                          },
+                          "utm_ad_id": {
+                            "type": "string",
+                            "description": "ID объявления"
+                          },
+                          "utm_phrase_id": {
+                            "type": "string",
+                            "description": "ID фразы"
+                          },
+                          "utm_content": {
+                            "type": "string",
+                            "description": "Содержание кампании"
+                          },
+                          "channel_type": {
+                            "type": "string",
+                            "description": "Тип канала"
+                          },
+                          "channel_name": {
+                            "type": "string",
+                            "description": "Название канала"
+                          },
+                          "channel_medium": {
+                            "type": "string",
+                            "description": "Медиум канала"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка в запросе",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "Need contacts_id"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "System error: Database connection failed"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estateBuy/list",
+    "summary": "Получение списка заявок недвижимости",
+    "description": "",
+    "tags": [
+      "EstateBuy"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": false,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "updated_from": {
+                "type": "string",
+                "format": "date-time",
+                "example": "yyyy-mm-dd HH:mm:ss",
+                "description": "Дата начала периода для фильтрации по дате изменения заявок"
+              },
+              "updated_to": {
+                "type": "string",
+                "format": "date-time",
+                "example": "yyyy-mm-dd HH:mm:ss",
+                "description": "Дата окончания периода для фильтрации по дате изменения заявок"
+              },
+              "date_from": {
+                "type": "string",
+                "format": "date",
+                "description": "Дата начала периода для фильтрации по дате создания заявок"
+              },
+              "date_to": {
+                "type": "string",
+                "format": "date",
+                "description": "Дата окончания периода для фильтрации по дате создания заявок"
+              },
+              "statuses": {
+                "type": "array",
+                "description": "Фильтрация по базовым статусам заявок. Передавайте массив ID базовых статусов (не кастомных подстатусов).\nПолучить доступные статусы и их ID можно через метод GET /api/v2/estateBuy/statuses.\nПо умолчанию, если параметр не передан, возвращаются активные статусы (Неразобранное, Проверка, Подбор, Отказ, Отложено, Бронь, Сделка в работе).\n",
+                "items": {
+                  "type": "integer"
+                },
+                "example": [
+                  10,
+                  20
+                ]
+              },
+              "show_integrations": {
+                "type": "boolean",
+                "description": "Флаг для отображения данных интеграций"
+              },
+              "from": {
+                "type": "integer",
+                "description": "Идентификатор записи для пагинации"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "description": "Статус ответа",
+                  "example": "ok"
+                },
+                "time": {
+                  "type": "integer",
+                  "description": "Текущее время (timestamp)"
+                },
+                "buys": {
+                  "type": "array",
+                  "description": "Список заявок",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "Идентификатор заявки"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Тип заявки"
+                      },
+                      "category": {
+                        "type": "string",
+                        "description": "Категория заявки"
+                      },
+                      "category_human": {
+                        "type": "string",
+                        "description": "Название категории"
+                      },
+                      "status": {
+                        "type": "integer",
+                        "description": "Статус заявки"
+                      },
+                      "status_human": {
+                        "type": "string",
+                        "description": "Название статуса"
+                      },
+                      "status_custom": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Подстатус/Кастомный статус заявки"
+                      },
+                      "date_added": {
+                        "type": "integer",
+                        "description": "Таймстамп даты добавления заявки"
+                      },
+                      "date_modified": {
+                        "type": "integer",
+                        "description": "Таймстамп даты изменения заявки"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "yyyy-mm-dd HH:mm:ss",
+                        "nullable": true,
+                        "description": "Дата и время последнего обновления"
+                      },
+                      "departments_id": {
+                        "type": "integer",
+                        "nullable": true,
+                        "description": "ID департамента заявки"
+                      },
+                      "deal_id": {
+                        "type": "integer",
+                        "nullable": true,
+                        "description": "ID сделки"
+                      },
+                      "sell_id": {
+                        "type": "integer",
+                        "nullable": true,
+                        "description": "ID объекта недвижимости из сделки"
+                      },
+                      "sell_parent_id": {
+                        "type": "integer",
+                        "nullable": true,
+                        "description": "ID дома объекта недвижимости из сделки"
+                      },
+                      "is_primary_request": {
+                        "type": "boolean",
+                        "description": "Признак первичного обращения по заявке"
+                      },
+                      "merged_for_estate_id": {
+                        "type": "integer",
+                        "nullable": true,
+                        "description": "ID заявки, с которой была объединена текущая заявка"
+                      },
+                      "first_house_interest": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Первый интерес к дому"
+                      },
+                      "first_meetings_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "yyyy-mm-dd HH:mm:ss",
+                        "nullable": true,
+                        "description": "Дата первой встречи"
+                      },
+                      "last_meetings_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "yyyy-mm-dd HH:mm:ss",
+                        "nullable": true,
+                        "description": "Дата последней встречи"
+                      },
+                      "reserves_count": {
+                        "type": "integer",
+                        "description": "Количество резервов"
+                      },
+                      "entity_attrs": {
+                        "type": "object",
+                        "description": "Атрибуты заявки"
+                      },
+                      "custom_attributes": {
+                        "type": "object",
+                        "description": "Кастомные атрибуты заявки из каталога кастомных атрибутов https://macroserver.ru/account/company/customFields/"
+                      },
+                      "utm": {
+                        "type": "object",
+                        "description": "Информация об источниках трафика",
+                        "properties": {
+                          "utm_history": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "ID истории UTM-меток"
+                          },
+                          "utm_keyword": {
+                            "type": "string",
+                            "description": "utm_keyword"
+                          },
+                          "utm_term": {
+                            "type": "string",
+                            "description": "utm_term"
+                          },
+                          "utm_source": {
+                            "type": "string",
+                            "description": "utm_source"
+                          },
+                          "utm_medium": {
+                            "type": "string",
+                            "description": "utm_medium"
+                          },
+                          "utm_campaign": {
+                            "type": "string",
+                            "description": "utm_campaign"
+                          },
+                          "utm_position_type": {
+                            "type": "string",
+                            "description": "utm_position_type"
+                          },
+                          "utm_block": {
+                            "type": "string",
+                            "description": "utm_block"
+                          },
+                          "utm_position": {
+                            "type": "string",
+                            "description": "utm_position"
+                          },
+                          "utm_campaign_id": {
+                            "type": "string",
+                            "description": "utm_campaign_id"
+                          },
+                          "utm_ad_id": {
+                            "type": "string",
+                            "description": "utm_ad_id"
+                          },
+                          "utm_phrase_id": {
+                            "type": "string",
+                            "description": "utm_phrase_id"
+                          },
+                          "utm_content": {
+                            "type": "string",
+                            "description": "utm_content"
+                          },
+                          "channel_type": {
+                            "type": "string",
+                            "description": "channel_type"
+                          },
+                          "channel_name": {
+                            "type": "string",
+                            "description": "channel_name"
+                          },
+                          "channel_medium": {
+                            "type": "string",
+                            "description": "channel_medium"
+                          }
+                        }
+                      },
+                      "tags": {
+                        "type": "array",
+                        "description": "Теги, привязанные к заявке",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "description": "ID тега"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "Название тега"
+                            }
+                          }
+                        }
+                      },
+                      "contact": {
+                        "type": "object",
+                        "description": "Информация о контакте",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "ID контакта"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Полное имя контакта"
+                          },
+                          "name_first": {
+                            "type": "string",
+                            "description": "Имя"
+                          },
+                          "name_last": {
+                            "type": "string",
+                            "description": "Фамилия"
+                          },
+                          "name_middle": {
+                            "type": "string",
+                            "description": "Отчество"
+                          },
+                          "phones": {
+                            "type": "string",
+                            "description": "Телефоны контакта"
+                          },
+                          "emails": {
+                            "type": "string",
+                            "description": "Email адреса контакта"
+                          },
+                          "roles_set": {
+                            "type": "string",
+                            "description": "Набор ролей контакта"
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Тип контакта"
+                          },
+                          "custom_attributes": {
+                            "type": "object",
+                            "description": "Кастомные атрибуты контакта из каталога кастомных атрибутов https://macroserver.ru/account/company/customFields/"
+                          }
+                        }
+                      },
+                      "agent": {
+                        "type": "object",
+                        "nullable": true,
+                        "description": "Информация об агенте",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "ID агента"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Имя агента"
+                          },
+                          "roles_set": {
+                            "type": "string",
+                            "description": "Набор ролей агента"
+                          },
+                          "agent_org": {
+                            "type": "object",
+                            "description": "Информация об агентстве",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "description": "ID агентства"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Название агентства"
+                              },
+                              "comm_inn": {
+                                "type": "string",
+                                "description": "ИНН агентства"
+                              },
+                              "roles_set": {
+                                "type": "string",
+                                "description": "Набор ролей агентства"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "manager": {
+                        "type": "object",
+                        "description": "Информация о менеджере",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "ID менеджера"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Имя менеджера"
+                          }
+                        }
+                      },
+                      "_integrations": {
+                        "type": "array",
+                        "nullable": true,
+                        "description": "Данные интеграций",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "source": {
+                              "type": "string",
+                              "description": "Источник интеграции"
+                            },
+                            "source_uuid": {
+                              "type": "string",
+                              "description": "UUID источника"
+                            },
+                            "source_code": {
+                              "type": "string",
+                              "description": "Код источника"
+                            },
+                            "source_document": {
+                              "type": "string",
+                              "description": "Документ источника"
+                            }
+                          }
+                        }
+                      },
+                      "_calls": {
+                        "type": "array",
+                        "nullable": true,
+                        "description": "Информация о звонках",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "description": "ID звонка"
+                            },
+                            "manager_id": {
+                              "type": "integer",
+                              "description": "ID менеджера"
+                            },
+                            "direction": {
+                              "type": "string",
+                              "description": "Направление звонка"
+                            },
+                            "status": {
+                              "type": "string",
+                              "description": "Статус звонка"
+                            },
+                            "call_date": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "yyyy-mm-dd HH:mm:ss",
+                              "description": "Дата и время звонка"
+                            },
+                            "duration": {
+                              "type": "integer",
+                              "description": "Продолжительность звонка в секундах"
+                            }
+                          }
+                        }
+                      },
+                      "_linked_contacts": {
+                        "type": "array",
+                        "description": "Связанные контакты",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "description": "ID контакта"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "Имя контакта"
+                            },
+                            "phones": {
+                              "type": "string",
+                              "description": "Телефоны контакта"
+                            },
+                            "roles_set": {
+                              "type": "string",
+                              "description": "Набор ролей контакта"
+                            },
+                            "link_type": {
+                              "type": "string",
+                              "description": "Тип связи"
+                            }
+                          }
+                        }
+                      },
+                      "_reserves": {
+                        "type": "array",
+                        "nullable": true,
+                        "description": "История броней",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "description": "ID записи"
+                            },
+                            "estate_id": {
+                              "type": "integer",
+                              "description": "ID заявки"
+                            },
+                            "created_at": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "yyyy-mm-dd HH:mm:ss",
+                              "description": "Дата создания"
+                            },
+                            "estate_sell_id": {
+                              "type": "integer",
+                              "description": "ID объекта недвижимости"
+                            },
+                            "parent_title": {
+                              "type": "string",
+                              "description": "Дом объекта"
+                            },
+                            "complex_title": {
+                              "type": "string",
+                              "description": "Название ЖК"
+                            },
+                            "geo_city": {
+                              "type": "string",
+                              "description": "Город"
+                            },
+                            "estate_rooms": {
+                              "type": "string",
+                              "description": "Количество комнат"
+                            },
+                            "estate_floor": {
+                              "type": "string",
+                              "description": "Этаж"
+                            },
+                            "estate_area": {
+                              "type": "string",
+                              "description": "Площадь"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "next": {
+                  "type": "integer",
+                  "nullable": true,
+                  "description": "ID следующей записи для пагинации"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка в запросе",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "System error: Database connection failed"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/estateBuy/statuses",
+    "summary": "Получение списка статусов заявок",
+    "description": "",
+    "tags": [
+      "EstateBuy"
+    ],
+    "parameters": [],
+    "requestBody": null,
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statuses": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "ID базового статуса",
+                        "example": 10
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Название базового статуса",
+                        "example": "Проверка"
+                      },
+                      "custom_statuses": {
+                        "type": "array",
+                        "description": "Список кастомных подстатусов",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "description": "ID кастомного статуса",
+                              "example": 123
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "Название кастомного статуса"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estateBuy/changeStatus",
+    "summary": "Изменение статуса заявки на покупку недвижимости",
+    "description": "",
+    "tags": [
+      "EstateBuy"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": [
+              "estate_buy_id"
+            ],
+            "properties": {
+              "estate_buy_id": {
+                "type": "integer",
+                "description": "ID заявки на покупку недвижимости",
+                "example": 12345
+              },
+              "status_to": {
+                "type": "integer",
+                "description": "ID базового статуса, в который нужно перевести заявку.\nРазрешены только следующие статусы:\n- Неразобранное\n- Проверка\n- Подбор\n- Бронь\n- Сделка в работе\n\nДействуют следующие правила:\n- В статусе бронь/сделка разрешено менять только кастомный статус\n- В статусах проверка/подбор при смене на проверку/подбор/неразобранное нет ограничений\n- В статусе неразобранное необходимо переводить в проверку/подбор с указанием менеджера\n",
+                "example": 20
+              },
+              "custom_status_to": {
+                "type": "integer",
+                "description": "ID кастомного подстатуса",
+                "example": 94
+              },
+              "remove_custom_status": {
+                "type": "boolean",
+                "description": "Если true, то кастомный статус будет удален",
+                "example": false
+              },
+              "manager_id": {
+                "type": "integer",
+                "description": "ID менеджера (обязательно при переводе из статуса \"Неразобранное\")",
+                "example": 567
+              },
+              "comment": {
+                "type": "string",
+                "description": "Комментарий к изменению статуса"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "estate_buy": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "ID заявки",
+                      "example": 12345
+                    },
+                    "status": {
+                      "type": "integer",
+                      "description": "Текущий базовый статус заявки",
+                      "example": 30
+                    },
+                    "status_custom": {
+                      "type": "integer",
+                      "description": "Текущий кастомный подстатус заявки",
+                      "example": 94
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка в запросе",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Текст ошибки",
+                  "example": "Требуется estate_buy_id"
+                },
+                "estate_buy": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "ID заявки",
+                      "example": 12345
+                    },
+                    "status": {
+                      "type": "integer",
+                      "description": "Текущий базовый статус заявки",
+                      "example": 20
+                    },
+                    "status_custom": {
+                      "type": "integer",
+                      "description": "Текущий кастомный подстатус заявки",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estateBuy/addNote",
+    "summary": "Добавляет заметку в ленту событий заявки",
+    "description": "",
+    "tags": [
+      "EstateBuy"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "ID заявки",
+                "example": 12345
+              },
+              "note": {
+                "type": "string",
+                "description": "Текст заметки"
+              }
+            },
+            "required": [
+              "id",
+              "note"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Заметка успешно добавлена",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка в запросе",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "Missing required param: id"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "HTTP статус код ошибки",
+                  "example": 400
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "System error: Database connection failed"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "HTTP статус код ошибки",
+                  "example": 500
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/estateShows/list",
+    "summary": "Список показов/броней/сделок",
+    "description": "",
+    "tags": [
+      "EstateShows"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "contacts_id": {
+                "type": "integer",
+                "description": "ID контакта",
+                "example": 7171828
+              },
+              "deal_ids": {
+                "type": "array",
+                "description": "ID сделок",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "description": "Статус ответа",
+                  "example": "ok"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Сообщение ответа",
+                  "example": "success"
+                },
+                "time": {
+                  "type": "integer",
+                  "description": "Время генерации ответа (timestamp)",
+                  "example": 1751270098
+                },
+                "next": {
+                  "type": "int",
+                  "description": "Ссылка на следующую запись (если есть)",
+                  "nullable": true
+                },
+                "data": {
+                  "type": "array",
+                  "description": "Массив интересов/сделок",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "ID сделки",
+                        "example": 1317935
+                      },
+                      "source": {
+                        "type": "string",
+                        "description": "Источник сделки",
+                        "nullable": true,
+                        "example": "1с"
+                      },
+                      "source_uuid": {
+                        "type": "string",
+                        "description": "UUID источника сделки",
+                        "nullable": true,
+                        "example": "1164d8ae-204d-1122-a239-00155d18041a"
+                      },
+                      "integrations": {
+                        "type": "array",
+                        "description": "Интеграции",
+                        "nullable": true,
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "source": {
+                              "type": "string",
+                              "description": "Источник интеграции",
+                              "example": "1с"
+                            },
+                            "source_code": {
+                              "type": "string",
+                              "description": "Код источника",
+                              "example": "00-061812"
+                            },
+                            "source_uuid": {
+                              "type": "string",
+                              "description": "UUID источника",
+                              "example": "1164d8ae-204d-1122-a239-00155d18041a"
+                            },
+                            "source_document": {
+                              "type": "string",
+                              "description": "Документ источника",
+                              "example": "Catalog_ДоговорыКонтрагентов"
+                            }
+                          }
+                        }
+                      },
+                      "deal": {
+                        "type": "object",
+                        "description": "Параметры сделки",
+                        "properties": {
+                          "deal_id": {
+                            "type": "integer",
+                            "description": "ID сделки",
+                            "example": 1317935
+                          },
+                          "company_id": {
+                            "type": "integer",
+                            "description": "ID компании"
+                          },
+                          "estate_buy_id": {
+                            "type": "integer",
+                            "description": "ID заявки"
+                          },
+                          "estate_sell_id": {
+                            "type": "integer",
+                            "description": "ID объекта недвижимости"
+                          },
+                          "contacts_buy_id": {
+                            "type": "integer",
+                            "description": "ID покупателя"
+                          },
+                          "status": {
+                            "type": "integer",
+                            "description": "Статус",
+                            "example": 110
+                          },
+                          "status_name": {
+                            "type": "string",
+                            "description": "Название статуса сделки",
+                            "example": "Сделка в работе"
+                          },
+                          "date_added": {
+                            "type": "integer",
+                            "description": "Таймстамп даты добавления",
+                            "example": 1743161634
+                          },
+                          "date_modified": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Дата изменения",
+                            "example": "2025-04-14 11:38:04"
+                          },
+                          "date_show": {
+                            "type": "integer",
+                            "description": "Дата окончания брони",
+                            "example": 1743513422
+                          },
+                          "deal_price": {
+                            "type": "number",
+                            "description": "Стоимость по прайсу",
+                            "example": 7285827
+                          },
+                          "deal_sum": {
+                            "type": "number",
+                            "description": "Стоимость по договору",
+                            "example": 6977027
+                          },
+                          "deal_sum_addons": {
+                            "type": "number",
+                            "description": "Сумма наценки",
+                            "example": 0
+                          },
+                          "deal_date": {
+                            "type": "string",
+                            "format": "date",
+                            "nullable": true,
+                            "description": "Дата проведения сделки"
+                          },
+                          "agreement_type": {
+                            "type": "string",
+                            "description": "Тип основного договора",
+                            "example": "ДДУ"
+                          },
+                          "agreement_number": {
+                            "type": "string",
+                            "description": "Номер основного договора"
+                          },
+                          "agreement_date": {
+                            "type": "string",
+                            "format": "date",
+                            "description": "Дата основного договора",
+                            "example": "14.04.2025"
+                          },
+                          "agreement_owner_date": {
+                            "type": "string",
+                            "format": "date",
+                            "nullable": true,
+                            "description": "Дата подписания акта"
+                          },
+                          "agreement_touch_date": {
+                            "type": "string",
+                            "format": "date",
+                            "nullable": true,
+                            "description": "Дата передачи под отделку"
+                          },
+                          "preliminary_number": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Номер предварительного договора"
+                          },
+                          "preliminary_date": {
+                            "type": "string",
+                            "format": "date",
+                            "nullable": true,
+                            "description": "Дата предварительного договора"
+                          },
+                          "justice_number": {
+                            "type": "string",
+                            "description": "Номер регистрации в Росреестре",
+                            "example": ""
+                          },
+                          "justice_date": {
+                            "type": "string",
+                            "format": "date",
+                            "nullable": true,
+                            "description": "Дата регистрации в Росреестре"
+                          },
+                          "justice_date_received": {
+                            "type": "string",
+                            "format": "date",
+                            "nullable": true,
+                            "description": "Фактическая дата получения документов из регистрации"
+                          },
+                          "justice_date_send": {
+                            "type": "string",
+                            "format": "date",
+                            "nullable": true,
+                            "description": "Фактическая дата отправки на регистрацию"
+                          },
+                          "deal_date_start": {
+                            "type": "string",
+                            "format": "date",
+                            "description": "Дата начала сделки",
+                            "example": "01.04.2025"
+                          },
+                          "deal_date_cancelled": {
+                            "type": "string",
+                            "format": "date",
+                            "nullable": true,
+                            "description": "Дата расторжения сделки"
+                          },
+                          "deal_cancelled_reason": {
+                            "type": "string",
+                            "description": "Причина расторжения сделки",
+                            "example": ""
+                          },
+                          "is_preliminary": {
+                            "type": "integer",
+                            "description": "признак наличия предварительного договора",
+                            "example": 0
+                          },
+                          "signed_by_buyer": {
+                            "type": "integer",
+                            "description": "Подписано покупателем",
+                            "example": 0
+                          },
+                          "signed_date": {
+                            "type": "string",
+                            "format": "date",
+                            "nullable": true,
+                            "description": "Дата подписания покупателем"
+                          },
+                          "deal_comments": {
+                            "type": "string",
+                            "description": "Комментарии к сделке",
+                            "example": ""
+                          },
+                          "deal_mediator_comission": {
+                            "type": "number",
+                            "description": "Сумма комиссии агенту в сделке",
+                            "example": 279081
+                          },
+                          "terms_approved_date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Дата согласования договора",
+                            "example": "02.04.2025"
+                          },
+                          "terms_approved_send": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Дата отправки на согласование",
+                            "example": "02.04.2025"
+                          },
+                          "agreement_verified_date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "nullable": true,
+                            "description": "Дата проверки договора"
+                          },
+                          "deal_programs_id": {
+                            "type": "integer",
+                            "description": "Способ обеспечения"
+                          },
+                          "is_payed_reserve": {
+                            "type": "integer",
+                            "description": "Признак включения платной брони",
+                            "example": 1
+                          },
+                          "promo_id": {
+                            "type": "array",
+                            "description": "ID акции",
+                            "items": {}
+                          },
+                          "arles_agreement_num": {
+                            "type": "string",
+                            "description": "Номер договора бронирования",
+                            "example": ""
+                          },
+                          "arles_agreement_date": {
+                            "type": "string",
+                            "format": "date",
+                            "description": "Дата договора бронирования",
+                            "example": "28.03.2025"
+                          },
+                          "transfer_finish_date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "nullable": true,
+                            "description": "Дата осмотра объекта с покупателем"
+                          },
+                          "is_accompaniment": {
+                            "type": "integer",
+                            "description": "Признак сопровождения",
+                            "example": 0
+                          },
+                          "is_exclusive": {
+                            "type": "integer",
+                            "description": "Признак эксклюзивности",
+                            "example": 0
+                          },
+                          "is_investor": {
+                            "type": "integer",
+                            "description": "Признак инвестиций",
+                            "example": 0
+                          },
+                          "deal_program": {
+                            "type": "string",
+                            "description": "Программа сделки",
+                            "example": "Военная ипотека"
+                          },
+                          "term_approved_status": {
+                            "type": "string",
+                            "description": "Статус согласования",
+                            "example": "Согласовано"
+                          },
+                          "deal_mediator_commission_fact": {
+                            "type": "number",
+                            "nullable": true,
+                            "description": "Фактическая комиссия агенту"
+                          },
+                          "deal_mediator_commission_fact_date": {
+                            "type": "string",
+                            "format": "date",
+                            "nullable": true,
+                            "description": "Дата фактической комиссии агенту"
+                          },
+                          "date_finished_plan": {
+                            "type": "string",
+                            "format": "date",
+                            "nullable": true,
+                            "description": "Плановая дата завершения"
+                          }
+                        }
+                      },
+                      "bank": {
+                        "type": "object",
+                        "description": "Данные банка",
+                        "nullable": true,
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "ID банка",
+                            "example": 102308
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Название банка",
+                            "example": "Промсвязьбанк"
+                          }
+                        }
+                      },
+                      "object": {
+                        "type": "object",
+                        "description": "Данные объекта",
+                        "properties": {
+                          "estate_id": {
+                            "type": "integer",
+                            "description": "ID объекта",
+                            "example": 123456
+                          },
+                          "house_address": {
+                            "type": "string",
+                            "description": "Адрес дома",
+                            "example": "Россия, Рязанская область, г. Рязань, ул. Восточная, д. 1"
+                          },
+                          "category_name": {
+                            "type": "string",
+                            "description": "Название категории объекта",
+                            "example": "Квартира"
+                          },
+                          "estate_area": {
+                            "type": "number",
+                            "description": "Площадь объекта",
+                            "example": 61.76
+                          },
+                          "estate_price": {
+                            "type": "number",
+                            "description": "Цена объекта",
+                            "example": 7409347
+                          },
+                          "estate_floor": {
+                            "type": "integer",
+                            "description": "Этаж",
+                            "example": 19
+                          },
+                          "estate_rooms": {
+                            "type": "integer",
+                            "description": "Количество комнат",
+                            "example": 2
+                          }
+                        }
+                      },
+                      "buyer": {
+                        "type": "array",
+                        "description": "Данные покупателя",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "description": "ID покупателя",
+                              "example": 11223344
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "ФИО покупателя",
+                              "example": "Иванов Андрей Андреевич"
+                            },
+                            "phones": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "description": "Телефоны",
+                              "example": [
+                                "+7 (900) 123-4567"
+                              ]
+                            },
+                            "emails": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "description": "Email"
+                            }
+                          }
+                        }
+                      },
+                      "agent": {
+                        "type": "object",
+                        "description": "Данные агента",
+                        "nullable": true,
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "ID агента"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Имя агента"
+                          }
+                        }
+                      },
+                      "payments": {
+                        "type": "array",
+                        "description": "Платежи",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "ID платежа",
+                              "example": "2302547"
+                            },
+                            "date": {
+                              "type": "string",
+                              "format": "date",
+                              "description": "Дата платежа",
+                              "example": "28.03.2025"
+                            },
+                            "summa": {
+                              "type": "string",
+                              "description": "Сумма",
+                              "example": "30000.00"
+                            },
+                            "status": {
+                              "type": "string",
+                              "description": "Статус",
+                              "example": "Проведено"
+                            }
+                          }
+                        }
+                      },
+                      "payments_plan": {
+                        "type": "array",
+                        "description": "План платежей",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "payment_date": {
+                              "type": "string",
+                              "format": "date",
+                              "description": "Дата платежа",
+                              "example": "01.05.2025"
+                            },
+                            "payment_summa": {
+                              "type": "string",
+                              "description": "Сумма платежа",
+                              "example": "165000.00"
+                            },
+                            "money_source": {
+                              "type": "string",
+                              "description": "Источник денег",
+                              "example": "Безналичные"
+                            }
+                          }
+                        }
+                      },
+                      "manager": {
+                        "type": "object",
+                        "description": "Данные менеджера",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "ID менеджера",
+                            "example": 70837
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Имя менеджера"
+                          },
+                          "phones": {
+                            "type": "string",
+                            "description": "Телефон"
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Email"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/estateShows/statuses",
+    "summary": "Статусы сделок",
+    "description": "",
+    "tags": [
+      "EstateShows"
+    ],
+    "parameters": [],
+    "requestBody": null,
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statuses": {
+                  "type": "object",
+                  "description": "Список статусов сделок"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estateShows/like",
+    "summary": "Добавляет объект в избранное / создает показ",
+    "description": "",
+    "tags": [
+      "EstateShows"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "contacts_id": {
+                "type": "integer",
+                "description": "ID контакта",
+                "example": 123
+              },
+              "estate_id": {
+                "type": "integer",
+                "description": "ID объекта недвижимости",
+                "example": 456
+              },
+              "manager_id": {
+                "type": "integer",
+                "description": "ID менеджера, на которого назначить новую заявку и показ",
+                "example": 456
+              },
+              "utm": {
+                "type": "object",
+                "description": "Массив UTM меток"
+              }
+            },
+            "required": [
+              "contacts_id",
+              "estate_id"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "shows_id": {
+                  "type": "integer",
+                  "example": 789
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estateShows/dislike",
+    "summary": "Убирает объект из избранного / меняет статуса показа",
+    "description": "",
+    "tags": [
+      "EstateShows"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "contacts_id": {
+                "type": "integer",
+                "description": "ID контакта",
+                "example": 123
+              },
+              "estate_id": {
+                "type": "integer",
+                "description": "ID объекта недвижимости",
+                "example": 456
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "shows_id": {
+                  "type": "integer",
+                  "example": 789
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estateShows/addReserve",
+    "summary": "Постановка бесплатной брони",
+    "description": "",
+    "tags": [
+      "EstateShows"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "contacts_id": {
+                "type": "integer",
+                "description": "ID контакта",
+                "example": 123
+              },
+              "shows_id": {
+                "type": "integer",
+                "description": "ID показа",
+                "example": 789
+              },
+              "reserve_days": {
+                "type": "integer",
+                "description": "на сколько дней поставить бронь",
+                "example": 14
+              }
+            },
+            "required": [
+              "shows_id",
+              "contacts_id"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "shows_id": {
+                  "type": "object",
+                  "description": "Данные брони"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estateShows/removeReserve",
+    "summary": "Снятие брони",
+    "description": "",
+    "tags": [
+      "EstateShows"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "contacts_id": {
+                "type": "integer",
+                "description": "ID контакта",
+                "example": 123
+              },
+              "shows_id": {
+                "type": "integer",
+                "description": "ID показа",
+                "example": 789
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "shows_id": {
+                  "type": "integer",
+                  "example": 789
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estateShows/changeStatus",
+    "summary": "Смена статуса сделки",
+    "description": "Разрешенные переходы:\n  - Из брони → «Сделка в работе» (`newStatus=deal`)\n  - Из «Сделка в работе» → «Сделка проведена» (`newStatus=done`)\n\nСтатусы меняются принудительно (по возможности), ограничения компании игнорируются.\n\nПримечания:\n  - Для перевода в «Сделка в работе» объект должен быть в статусе «Бронь».\n  - Для перевода в «Сделка проведена» текущий статус должен быть «Сделка в работе», и обязателен параметр `deal_date`.\n",
+    "tags": [
+      "EstateShows"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": [
+              "contacts_id",
+              "shows_id",
+              "newStatus"
+            ],
+            "properties": {
+              "contacts_id": {
+                "type": "integer",
+                "description": "ID контакта покупателя",
+                "example": 54665
+              },
+              "shows_id": {
+                "type": "integer",
+                "description": "ID сделки (EstateShows)",
+                "example": 16214
+              },
+              "newStatus": {
+                "type": "string",
+                "description": "Новый статус сделки",
+                "enum": [
+                  "deal",
+                  "done"
+                ],
+                "example": "deal"
+              },
+              "manager_id": {
+                "type": "integer",
+                "description": "ID менеджера-ответственного за сделку (опционально для `deal`)",
+                "example": 1
+              },
+              "deal_date": {
+                "type": "string",
+                "format": "date",
+                "description": "Дата проведения сделки (обязательно при `newStatus=done`), формат YYYY-MM-DD",
+                "example": "2025-10-08"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "shows_id": {
+                  "type": "integer",
+                  "example": 16214
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "Текущий статус сделки (см. константы EstateShows::STATUS_*)",
+                  "example": 110
+                },
+                "deal_date": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Дата проведения сделки (возвращается при переводе в `done`)",
+                  "example": "2025-10-08"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка в запросе",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Текст ошибки",
+                  "example": "Требуется deal_date"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/estateShows/addPaymentReserve",
+    "summary": "Постановка платной брони",
+    "description": "",
+    "tags": [
+      "EstateShows"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "contacts_id": {
+                "type": "integer",
+                "description": "ID контакта",
+                "example": 123
+              },
+              "shows_id": {
+                "type": "integer",
+                "description": "ID показа",
+                "example": 789
+              },
+              "reserve_summa": {
+                "type": "number",
+                "format": "float",
+                "description": "Сумма платной брони (можно не указывать, если в настройках аккаунта разрешено ответственному вручную переводить в платную бронь)",
+                "example": 10000
+              },
+              "reserve_days": {
+                "type": "integer",
+                "description": "на сколько дней поставить бронь",
+                "example": 14
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "shows": {
+                  "type": "object",
+                  "description": "Данные брони"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/tasks/create",
+    "summary": "Create a task",
+    "description": "",
+    "tags": [
+      "Tasks"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "manager_id": {
+                "type": "integer",
+                "description": "ID of the manager (executor) of the task"
+              },
+              "title": {
+                "type": "string",
+                "description": "Title of the task"
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the task"
+              },
+              "date_finish": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Finish date of the task"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "meeting",
+                  "meeting_house",
+                  "call",
+                  "project",
+                  "other"
+                ],
+                "default": "other",
+                "description": "Type of the task, defaults to 'other' if invalid value is provided."
+              },
+              "assigner_id": {
+                "type": "integer",
+                "description": "ID of the assigner of the task"
+              },
+              "category_id": {
+                "type": "integer",
+                "description": "Category ID of the task"
+              },
+              "priority": {
+                "type": "integer",
+                "enum": [
+                  -1,
+                  0,
+                  1,
+                  2
+                ],
+                "default": 0,
+                "description": "Priority of the task, where -1 is Low, 0 is Normal, 1 is High, and 2 is Highest. Defaults to 0 if invalid value is provided."
+              },
+              "hours_plan": {
+                "type": "integer",
+                "description": "Planned number of hours for the task"
+              },
+              "estate_id": {
+                "type": "integer",
+                "description": "ID of the estate or object related to the task"
+              },
+              "projects_id": {
+                "type": "integer",
+                "description": "ID of the project related to the task"
+              },
+              "projects_tasks_id": {
+                "type": "integer",
+                "description": "Task ID within the project"
+              }
+            },
+            "required": [
+              "manager_id",
+              "title",
+              "description",
+              "date_finish",
+              "type"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Task successfully created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "task_id": {
+                  "type": "integer",
+                  "description": "ID of the newly created task",
+                  "example": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/tasks/get",
+    "summary": "Получение информации о задаче",
+    "description": "",
+    "tags": [
+      "Tasks"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "integer",
+                "description": "ID задачи"
+              }
+            },
+            "required": [
+              "task_id"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Task info",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "task": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "ID задачи",
+                      "example": 15997
+                    },
+                    "parent_tasks_id": {
+                      "type": "integer",
+                      "description": "ID родительской задачи",
+                      "nullable": true
+                    },
+                    "category_id": {
+                      "type": "integer",
+                      "description": "ID категории задачи",
+                      "nullable": true
+                    },
+                    "manager_id": {
+                      "type": "integer",
+                      "description": "ID менеджера задачи"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Статус задачи"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Тип задачи"
+                    },
+                    "date_added": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Дата создания задачи"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Дата последнего обновления задачи"
+                    },
+                    "date_start": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Дата начала задачи"
+                    },
+                    "date_finish": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Дата завершения задачи"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Заголовок задачи"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Публичная часть описания задачи"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/calls/getSaleDepartmentsCalls",
+    "summary": "Получить звонки отдела продаж",
+    "description": "",
+    "tags": [
+      "Calls"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "integer",
+                "nullable": true,
+                "description": "id записи для следующей выборки звонков"
+              },
+              "date_from": {
+                "type": "string",
+                "example": "2025-09-16",
+                "description": "Дата и время начала интервала.\n**Поддерживаемые форматы:**\n- `YYYY-MM-DD HH:mm:ss` (напр., '2025-09-16 10:00:00')\n- `YYYY-MM-DD HH:mm` (напр., '2025-09-16 10:00')\n- `DD.MM.YYYY HH:mm` (напр., '16.09.2025 10:00')\n- `YYYY-MM-DD` (напр., '2025-09-16')\n- `DD.MM.YYYY` (напр., '16.09.2025')\n\n*Если время не указано, поиск начнется с `00:00:00` указанной даты.*\n"
+              },
+              "date_to": {
+                "type": "string",
+                "example": "2025-09-16 18:30:00",
+                "description": "Дата и время окончания интервала.\nПоддерживаемые форматы аналогичны `date_from`.\n\n*Если время не указано, поиск закончится в `23:59:59` указанной даты.*\n"
+              }
+            },
+            "required": [
+              "date_from",
+              "date_to"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "description": "Статус ответа"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Сообщение ответа"
+                },
+                "time": {
+                  "type": "integer",
+                  "description": "Временная метка"
+                },
+                "next": {
+                  "type": "int",
+                  "nullable": true,
+                  "description": "id записи для следующей выборки звонков"
+                },
+                "data": {
+                  "type": "array",
+                  "description": "Список звонков",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "ID звонка"
+                      },
+                      "status": {
+                        "type": "string",
+                        "description": "Статус звонка"
+                      },
+                      "direction": {
+                        "type": "string",
+                        "description": "Направление звонка (in или out)"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "description": "Телефон абонента"
+                      },
+                      "contactsId": {
+                        "type": "integer",
+                        "description": "ID контакта"
+                      },
+                      "contactsName": {
+                        "type": "string",
+                        "description": "Имя контакта"
+                      },
+                      "usersId": {
+                        "type": "integer",
+                        "description": "ID сотрудника"
+                      },
+                      "usersName": {
+                        "type": "string",
+                        "description": "Имя сотрудника"
+                      },
+                      "departmentId": {
+                        "type": "integer",
+                        "description": "ID отдела"
+                      },
+                      "departmentName": {
+                        "type": "string",
+                        "description": "Название отдела"
+                      },
+                      "managerExt": {
+                        "type": "string",
+                        "description": "Расширение сотрудника в телефонии"
+                      },
+                      "callDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Дата звонка"
+                      },
+                      "talkStartDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true,
+                        "description": "Дата начала разговора"
+                      },
+                      "duration": {
+                        "type": "integer",
+                        "description": "Продолжительность звонка (в секундах)"
+                      },
+                      "durationTalk": {
+                        "type": "integer",
+                        "description": "Продолжительность разговора (в секундах)"
+                      },
+                      "isFirstUnique": {
+                        "type": "integer",
+                        "description": "Первый уникальный звонок (1 - да, 0 - нет)"
+                      },
+                      "isNoTarget": {
+                        "type": "integer",
+                        "description": "Нецелевой звонок (1 - да, 0 - нет)"
+                      },
+                      "estateId": {
+                        "type": "integer",
+                        "description": "ID заявки"
+                      },
+                      "estateStatus": {
+                        "type": "integer",
+                        "description": "Текущий статус заявки (deprecated)"
+                      },
+                      "estateCurrentStatus": {
+                        "type": "integer",
+                        "description": "Текущий статус заявки"
+                      },
+                      "vendor": {
+                        "type": "string",
+                        "description": "Телефония"
+                      },
+                      "externalCallId": {
+                        "type": "string",
+                        "description": "ID звонка в телефонии"
+                      },
+                      "externalRecordingId": {
+                        "type": "string",
+                        "description": "ID записи в телефонии"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/calls/getRecord",
+    "summary": "Получить запись звонка",
+    "description": "",
+    "tags": [
+      "Calls"
+    ],
+    "parameters": [
+      {
+        "in": "query",
+        "name": "call_id",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        },
+        "description": "ID звонка для получения записи"
+      }
+    ],
+    "requestBody": null,
+    "responses": {
+      "200": {
+        "description": "Успешная загрузка записи звонка",
+        "content": {
+          "application/octet-stream": {
+            "schema": {
+              "type": "string",
+              "format": "binary",
+              "description": "Аудиозапись звонка"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/calls/setDescription",
+    "summary": "Установка транскрипции и/или саммари звонка",
+    "description": "Метод позволяет сохранить к звонку транскрипцию разговора и/или текстовое саммари.\n",
+    "tags": [
+      "Calls"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": [
+              "call_id"
+            ],
+            "properties": {
+              "call_id": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "ID звонка",
+                "example": 123456
+              },
+              "transcription": {
+                "type": "array",
+                "description": "Массив фрагментов транскрипции",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "text",
+                    "channel"
+                  ],
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "description": "Текст фразы"
+                    },
+                    "channel": {
+                      "type": "integer",
+                      "enum": [
+                        1,
+                        2
+                      ],
+                      "description": "Канал говорящего (1 — менеджер, 2 — клиент)"
+                    }
+                  }
+                }
+              },
+              "summary": {
+                "type": "string",
+                "description": "Текст саммари разговора"
+              },
+              "stereo": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1
+                ],
+                "description": "Признак стереозаписи (опционально)",
+                "example": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "saved": {
+                      "type": "object",
+                      "properties": {
+                        "transcription": {
+                          "type": "boolean",
+                          "description": "Признак, что транскрипция сохранена",
+                          "example": true
+                        },
+                        "summary": {
+                          "type": "boolean",
+                          "description": "Признак, что саммари сохранено",
+                          "example": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка в запросе (валидация/бизнес-правила)",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Требуется корректный call_id"
+                },
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Звонок принадлежит другой компании"
+      },
+      "404": {
+        "description": "Звонок не найден"
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера"
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/contacts/create",
+    "summary": "Создание нового контакта",
+    "description": "Этот эндпоинт позволяет создать новый контакт.",
+    "tags": [
+      "Contacts"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "phones": {
+                "type": "array",
+                "description": "Телефонные номера контакта, требуется хотя бы один номер.",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "+79001234567"
+                ]
+              },
+              "name": {
+                "type": "string",
+                "description": "ФИО/Название контакта.",
+                "example": "Иванов Иван Иванович / ООО Ива"
+              },
+              "name_full": {
+                "type": "string",
+                "description": "Ассоциации, ключевые слова"
+              },
+              "name_first": {
+                "type": "string",
+                "description": "Имя контакта.",
+                "example": "Иван"
+              },
+              "name_last": {
+                "type": "string",
+                "description": "Фамилия контакта.",
+                "example": "Иванов"
+              },
+              "name_middle": {
+                "type": "string",
+                "description": "Отчество контакта.",
+                "example": "Иванович"
+              },
+              "type": {
+                "type": "integer",
+                "description": "Тип контакта (0 - ФЛ, 1 - ЮЛ)"
+              },
+              "dob": {
+                "type": "string",
+                "description": "Дата рождения контакта (формат Y-m-d или d.m.Y).",
+                "example": "1980-01-01"
+              },
+              "sex": {
+                "type": "integer",
+                "description": "Пол контакта (1 - мужской, 2 - женский).",
+                "example": 1
+              },
+              "emails": {
+                "type": "array",
+                "description": "Адреса электронной почты контакта.",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "ivan.ivanov@example.com"
+                ]
+              },
+              "fl_inn": {
+                "type": "string",
+                "description": "ИНН физического лица.",
+                "example": "123456789012"
+              },
+              "snils": {
+                "type": "string",
+                "description": "СНИЛС контакта.",
+                "example": "123-456-789 00"
+              },
+              "description": {
+                "type": "string",
+                "description": "Личная информация о контакте.",
+                "example": "Примечание о контакте"
+              },
+              "passport_type": {
+                "type": "string",
+                "description": "Тип документа удостоверяющего личность: пустое значение - паспорт РФ, birth - свидетельство о рождении, foreign - иностранный паспорт, residency - вид на жительство, idcard - ID-карта.",
+                "example": ""
+              },
+              "passport_num": {
+                "type": "string",
+                "description": "Номер паспорта.",
+                "example": "4510 123456"
+              },
+              "passport_date": {
+                "type": "string",
+                "description": "Дата выдачи паспорта (формат d.m.Y).",
+                "example": "01.01.2010"
+              },
+              "passport_organ": {
+                "type": "string",
+                "description": "Орган, выдавший паспорт.",
+                "example": "ОТДЕЛОМ УФМС РОССИИ ПО ГОР. МОСКВЕ"
+              },
+              "passport_organ_code": {
+                "type": "string",
+                "description": "Код подразделения, выдавшего паспорт (000-000).",
+                "example": "770-001"
+              },
+              "passport_bithplace": {
+                "type": "string",
+                "description": "Место рождения по паспорту.",
+                "example": "гор. Москва"
+              },
+              "passport_address": {
+                "type": "string",
+                "description": "Адрес регистрации по паспорту.",
+                "example": "г. Москва, ул. Ленина, д. 1, кв. 1"
+              }
+            },
+            "required": [
+              "phones",
+              "name"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Контакт успешно создан",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "contacts": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "ID созданного контакта",
+                      "example": 12345
+                    }
+                  }
+                },
+                "created": {
+                  "type": "boolean",
+                  "description": "Указывает, был ли контакт создан (true) или найден существующий (false)",
+                  "example": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка в запросе",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "Missing required param: phones"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "System error: Database connection failed"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/contacts/update",
+    "summary": "Обновление контакта",
+    "description": "Этот эндпоинт позволяет обновить существующий контакт.",
+    "tags": [
+      "Contacts"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Идентификатор контакта для обновления.",
+                "example": 12345
+              },
+              "name": {
+                "type": "string",
+                "description": "Полное имя контакта.",
+                "example": "Иванов Иван Иванович"
+              },
+              "name_first": {
+                "type": "string",
+                "description": "Имя контакта.",
+                "example": "Иван"
+              },
+              "name_last": {
+                "type": "string",
+                "description": "Фамилия контакта.",
+                "example": "Иванов"
+              },
+              "name_middle": {
+                "type": "string",
+                "description": "Отчество контакта.",
+                "example": "Иванович"
+              },
+              "dob": {
+                "type": "string",
+                "description": "Дата рождения контакта (формат Y-m-d или d.m.Y).",
+                "example": "1980-01-01"
+              },
+              "sex": {
+                "type": "integer",
+                "description": "Пол контакта (1 - мужской, 2 - женский).",
+                "example": 1
+              },
+              "emails": {
+                "type": "array",
+                "description": "Адреса электронной почты контакта.",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "ivan.ivanov@example.com"
+                ]
+              },
+              "fl_inn": {
+                "type": "string",
+                "description": "ИНН физического лица.",
+                "example": "123456789012"
+              },
+              "snils": {
+                "type": "string",
+                "description": "СНИЛС контакта.",
+                "example": "123-456-789 00"
+              },
+              "description": {
+                "type": "string",
+                "description": "Личная информация о контакте.",
+                "example": "Примечание о контакте"
+              },
+              "passport_type": {
+                "type": "string",
+                "description": "Тип документа удостоверяющего личность: пустое значение - паспорт РФ, birth - свидетельство о рождении, foreign - иностранный паспорт, residency - вид на жительство, idcard - ID-карта.",
+                "example": ""
+              },
+              "passport_num": {
+                "type": "string",
+                "description": "Номер паспорта.",
+                "example": "4510 123456"
+              },
+              "passport_date": {
+                "type": "string",
+                "description": "Дата выдачи паспорта (формат d.m.Y).",
+                "example": "01.01.2010"
+              },
+              "passport_organ": {
+                "type": "string",
+                "description": "Орган, выдавший паспорт.",
+                "example": "ОТДЕЛОМ УФМС РОССИИ ПО ГОР. МОСКВЕ"
+              },
+              "passport_organ_code": {
+                "type": "string",
+                "description": "Код подразделения, выдавшего паспорт (000-000).",
+                "example": "770-001"
+              },
+              "passport_bithplace": {
+                "type": "string",
+                "description": "Место рождения по паспорту.",
+                "example": "гор. Москва"
+              },
+              "passport_address": {
+                "type": "string",
+                "description": "Адрес регистрации по паспорту.",
+                "example": "г. Москва, ул. Ленина, д. 1, кв. 1"
+              }
+            },
+            "required": [
+              "id"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Контакт успешно обновлен",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "contacts": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "ID обновленного контакта",
+                      "example": 12345
+                    }
+                  }
+                },
+                "updated": {
+                  "type": "boolean",
+                  "description": "Указывает, был ли контакт успешно обновлен",
+                  "example": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка в запросе",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "Missing required param: id"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "HTTP статус код ошибки",
+                  "example": 400
+                }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Доступ запрещен",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "You do not have permission to update this contact"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "HTTP статус код ошибки",
+                  "example": 403
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Контакт не найден",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "Contact not found"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "HTTP статус код ошибки",
+                  "example": 404
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "System error: Database connection failed"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "HTTP статус код ошибки",
+                  "example": 500
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/contacts/find",
+    "summary": "Поиск контакта по телефону",
+    "description": "",
+    "tags": [
+      "Contacts"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "phone": {
+                "type": "string",
+                "description": "Телефон (в любом формате)"
+              }
+            },
+            "required": [
+              "phone"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Результат поиска",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "contact": {
+                  "type": "object",
+                  "description": "Данные контакта",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Идентификатор контакта"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "ФИО/Название контакта"
+                    },
+                    "name_full": {
+                      "type": "string",
+                      "description": "Ассоциации, ключевые слова"
+                    },
+                    "name_first": {
+                      "type": "string",
+                      "description": "Имя контакта.",
+                      "example": "Иван"
+                    },
+                    "name_last": {
+                      "type": "string",
+                      "description": "Фамилия контакта.",
+                      "example": "Иванов"
+                    },
+                    "name_middle": {
+                      "type": "string",
+                      "description": "Отчество контакта.",
+                      "example": "Иванович"
+                    },
+                    "type": {
+                      "type": "integer",
+                      "description": "Тип контакта (0 - ФЛ, 1 - ЮЛ)"
+                    },
+                    "sex": {
+                      "type": "string",
+                      "description": "Пол (1 - М, 2 - Ж)"
+                    },
+                    "roles": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Роли контакта"
+                    },
+                    "black_list": {
+                      "type": "boolean",
+                      "description": "Контакт в черном списке"
+                    },
+                    "is_mediator": {
+                      "type": "boolean",
+                      "description": "Признак агента"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка в запросе",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "Missing required param: phone"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "System error: Database connection failed"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/contacts/addNote",
+    "summary": "Добавляет заметку в ленту событий контакта",
+    "description": "",
+    "tags": [
+      "Contacts"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "ID контакта",
+                "example": 12345
+              },
+              "note": {
+                "type": "string",
+                "description": "Текст заметки"
+              }
+            },
+            "required": [
+              "id",
+              "note"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Заметка успешно добавлена",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка в запросе",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "Missing required param: id"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "HTTP статус код ошибки",
+                  "example": 400
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "System error: Database connection failed"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "HTTP статус код ошибки",
+                  "example": 500
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/entityIntegration/getIdByUUID",
+    "summary": "Поиск сопоставленных сущностей по их внешним UUID",
+    "description": "",
+    "tags": [
+      "EntityIntegrations"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "string",
+                "description": "Тип сущности",
+                "example": "estate_shows|estate|contacts"
+              },
+              "source": {
+                "type": "string",
+                "description": "Источник данных",
+                "example": "1c"
+              },
+              "uuid": {
+                "type": "array",
+                "description": "Массив UUID внешних сущностей",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "7ea97620-51ff-1234-9e6c-000c296921bd",
+                  "f899e006-55f4-5678-9e6c-000c296921bd",
+                  "6b320838-55f1-9101-9e6c-000c296921bd"
+                ]
+              }
+            },
+            "required": [
+              "entity",
+              "source",
+              "uuid"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный поиск сопоставлений",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "description": "Статус выполнения запроса",
+                  "example": true
+                },
+                "ids": {
+                  "type": "object",
+                  "description": "Сопоставление UUID внешних сущностей с ID внутренних сущностей",
+                  "additionalProperties": {
+                    "type": "integer"
+                  },
+                  "example": {
+                    "6b320838-55f1-1234-9e6c-000c296921bd": 12345,
+                    "f899e006-55f4-5678-9e6c-000c296921bd": 12366,
+                    "7ea97620-51ff-9101-9e6c-000c296921bd": 13457
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Ошибка в запросе",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "No matches found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Сообщение об ошибке",
+                  "example": "System error: Database connection failed"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/tags/list",
+    "summary": "Список тегов компании",
+    "description": "Возвращает список тегов, доступных в компании вызвавшего приложения/пользователя.",
+    "tags": [
+      "Tags"
+    ],
+    "parameters": [],
+    "requestBody": null,
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "tags": {
+                      "type": "array",
+                      "description": "Список тегов компании",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "ID тега",
+                            "example": 101
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Название тега",
+                            "example": "VIP"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Требуется параметр phone"
+                }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Доступ запрещен",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied to action"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера"
+      }
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/tags/getEntities",
+    "summary": "Получение ID сущностей по тегам",
+    "description": "Возвращает список ID сущностей, сопоставленных с указанным тегом или массивом тегов. Поддерживаются режимы or/and.",
+    "tags": [
+      "Tags"
+    ],
+    "parameters": [],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": [
+              "entity_type"
+            ],
+            "properties": {
+              "entity_type": {
+                "type": "string",
+                "description": "Тип сущности",
+                "enum": [
+                  "contacts",
+                  "tasks",
+                  "estate",
+                  "content",
+                  "finances",
+                  "calls"
+                ],
+                "example": "contacts"
+              },
+              "tag_ids": {
+                "type": "array",
+                "description": "Массив ID тегов компании",
+                "items": {
+                  "type": "integer"
+                },
+                "example": [
+                  1,
+                  2,
+                  3
+                ]
+              },
+              "tags": {
+                "type": "array",
+                "description": "Массив названий тегов компании (используется, если не переданы tag_ids)",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "VIP",
+                  "Новый"
+                ]
+              },
+              "mode": {
+                "type": "string",
+                "description": "Режим сопоставления тегов",
+                "enum": [
+                  "or",
+                  "and"
+                ],
+                "default": "or"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Успешный ответ",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "entity_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "description": "Список ID сущностей, удовлетворяющих условиям",
+                      "example": [
+                        10,
+                        21,
+                        35
+                      ]
+                    },
+                    "mode": {
+                      "type": "string",
+                      "description": "Примененный режим сопоставления",
+                      "example": "or"
+                    },
+                    "tags_count": {
+                      "type": "integer",
+                      "description": "Количество тегов, по которым производился поиск",
+                      "example": 2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Требуется параметр phone"
+                }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Доступ запрещен",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied to action"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера"
+      }
+    }
+  }
+];

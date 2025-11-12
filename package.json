@@ -29,6 +29,7 @@
     "@mastra/memory": "^0.15.9",
     "@mastra/pg": "^0.17.7",
     "hono": "^4.10.3",
+    "markitdown-ts": "^0.0.5",
     "redis": "^5.9.0",
     "vitest": "^4.0.4",
     "zod": "^4.1.12"

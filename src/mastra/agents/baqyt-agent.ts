@@ -7,6 +7,11 @@ import { BAQYT_MODERATION_MODEL_ID, BAQYT_PRIMARY_MODEL_ID, makeLanguageModel } 
 import { RedisBatchingProcessor } from '../processors/redis-batching-processor';
 import { RedisStopProcessor } from '../processors/redis-stop-processor';
 import { postgresStore, postgresVectorStore } from '../storage/postgres';
+import {
+  callMacroCrmOperation,
+  describeMacroCrmOperation,
+  macroCrmOperationTools,
+} from '../mcp/macrocrm-server';
 
 const resolveConversationId = (message: MastraMessageV2) =>
   (message.content.metadata?.userId as string | undefined) ?? message.threadId ?? message.resourceId;
@@ -18,11 +23,11 @@ export const baqytAgent = new Agent({
       keyPrefix: 'baqyt:input-stop',
       userIdResolver: resolveConversationId,
     }),
-    // new RedisBatchingProcessor({
-    //   keyPrefix: 'baqyt:input-batch',
-    //   userIdResolver: resolveConversationId,
-    // }),
-    new ModerationProcessor({
+    new RedisBatchingProcessor({
+    keyPrefix: 'baqyt:input-batch',
+    userIdResolver: resolveConversationId,
+     }),
+   new ModerationProcessor({
       model: makeLanguageModel(BAQYT_MODERATION_MODEL_ID),
       categories: ['hate', 'harassment', 'violence'],
       threshold: 0.7,
@@ -67,17 +72,15 @@ SYSTEM PROMPT
 - Каждое сообщение должно включать эмодзи и ссылку на выгоду встречи.
 - Всегда представляйтесь именем Бахыт.
 `,
+  tools: {
+    describeMacroCrmOperation,
+    callMacroCrmOperation,
+    ...macroCrmOperationTools,
+  },
   model: makeLanguageModel(BAQYT_PRIMARY_MODEL_ID),
   memory: new Memory({
     options: {
       lastMessages: 6,
-      semanticRecall: {
-        topK: 1,
-        messageRange: 1
-      },
-      threads: {
-        generateTitle: true
-      },
       workingMemory: {
         enabled: false,
         scope: 'thread',
@@ -89,7 +92,5 @@ SYSTEM PROMPT
       },
     },
     storage: postgresStore,
-    vector: postgresVectorStore,
-    embedder: fastembed,
   }),
 });

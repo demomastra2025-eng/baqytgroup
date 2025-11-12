@@ -1,4 +1,4 @@
-import type { Agent } from '@mastra/core/agent';
+import type { Agent, MastraMessageV2 } from '@mastra/core/agent';
 import { registerApiRoute } from '@mastra/core/server';
 import type { Context } from 'hono';
 import { baqytAgent } from '../../agents/baqyt-agent';
@@ -9,8 +9,17 @@ import {
   type WazzupMessage,
 } from '../services/wazzup-webhook-service';
 import { WazzupMediaService } from '../services/wazzup-media-service';
+import { RedisStopFlagService } from '../../processors/redis-stop-flag-service';
 
 const DEFAULT_WEBHOOK_PATH = '/webhooks/wazzup';
+const WAZZUP_RESOURCE_ID = 'wazzup';
+let redisStopFlagService: RedisStopFlagService | null = null;
+
+try {
+  redisStopFlagService = new RedisStopFlagService();
+} catch (error) {
+  console.warn('[WazzupRoute] RedisStopFlagService init failed, stop commands disabled', error);
+}
 
 const resolveWebhookPath = () => process.env.WAZZUP_WEBHOOK_PATH ?? DEFAULT_WEBHOOK_PATH;
 const WAZZUP_MESSAGE_URL = process.env.WAZZUP_MESSAGE_API_URL ?? 'https://api.wazzup24.com/v3/message';
@@ -123,6 +132,146 @@ const resolveMessageText = async (
   }
 
   return segments.length ? segments.join('\n\n') : null;
+};
+
+const shouldPersistOutboundMessage = (message: WazzupMessage) => {
+  if (!message.chatId) {
+    return false;
+  }
+
+  if (message.status === 'inbound') {
+    return false;
+  }
+
+  return message.status === 'sent';
+};
+
+const resolveOutboundMessageText = (message: WazzupMessage): string | null => {
+  const originalText = typeof message.text === 'string' ? message.text.trim() : '';
+  if (originalText) {
+    return originalText;
+  }
+
+  if (message.contentUri) {
+    const kind = message.type ?? 'контент';
+    return `Исходящее сообщение (${kind}). Ссылка: ${message.contentUri}`;
+  }
+
+  return null;
+};
+
+const persistOutboundMessages = async ({
+  messages,
+  agent,
+  logger,
+  allowedChatIds,
+}: {
+  messages: WazzupMessage[];
+  agent: Agent;
+  logger?: RouteLogger;
+  allowedChatIds: string[];
+}) => {
+  const log = makeLogger(logger);
+  const outboundMessages = messages.filter(
+    (message) => shouldPersistOutboundMessage(message) && allowedChatIds.includes(message.chatId ?? ''),
+  );
+
+  if (!outboundMessages.length) {
+    return;
+  }
+
+  const memory = await agent.getMemory();
+  if (!memory) {
+    log.warn('Не удалось получить память агента Baqyt, исходящие Wazzup не сохранены');
+    return;
+  }
+
+  const records: MastraMessageV2[] = [];
+  for (const message of outboundMessages) {
+    const text = resolveOutboundMessageText(message);
+    if (!text) {
+      log.debug('Пропускаем исходящее Wazzup без текста и вложений', {
+        messageId: message.messageId,
+        status: message.status,
+      });
+      continue;
+    }
+
+    const parts: MastraMessageV2['content']['parts'] = [
+      { type: 'text', text },
+    ];
+
+    const createdAtCandidate = message.dateTime ? new Date(message.dateTime) : new Date();
+    const createdAt = Number.isNaN(createdAtCandidate.getTime()) ? new Date() : createdAtCandidate;
+
+    const source = message.isEcho === true && !message.authorName ? 'agent' : 'manager';
+
+    const metadata: NonNullable<MastraMessageV2['content']['metadata']> = {
+      source,
+      wazzupMessageId: message.messageId,
+      wazzupChannelId: message.channelId,
+      wazzupChatType: message.chatType,
+      status: message.status,
+      isEcho: message.isEcho ?? null,
+      authorName: message.authorName ?? null,
+      contentUri: message.contentUri ?? null,
+    };
+
+      const trimmed = text.trim().toLowerCase();
+
+    if (source !== 'agent' && redisStopFlagService) {
+      if (trimmed === '/stop') {
+        try {
+          await redisStopFlagService.setStop(message.chatId!, 'stop');
+          log.info('Активирован stop-флаг по команде менеджера', {
+            chatId: message.chatId,
+            messageId: message.messageId,
+          });
+        } catch (error) {
+          log.error('Не удалось установить stop-флаг в Redis', {
+            chatId: message.chatId,
+            error: error instanceof Error ? error.stack ?? error.message : error,
+          });
+        }
+        continue;
+      } else if (trimmed === '/start') {
+        try {
+          await redisStopFlagService.clearStop(message.chatId!);
+          log.info('Снят stop-флаг по команде менеджера', {
+            chatId: message.chatId,
+            messageId: message.messageId,
+          });
+        } catch (error) {
+          log.error('Не удалось снять stop-флаг в Redis', {
+            chatId: message.chatId,
+            error: error instanceof Error ? error.stack ?? error.message : error,
+          });
+        }
+        continue;
+      }
+    }
+
+    records.push({
+      id: memory.generateId(),
+      role: 'assistant',
+      threadId: message.chatId!,
+      resourceId: WAZZUP_RESOURCE_ID,
+      createdAt,
+      type: message.type ?? 'text',
+      content: {
+        format: 2,
+        parts,
+        metadata,
+      },
+    });
+  }
+
+  if (!records.length) {
+    return;
+  }
+
+  await memory.saveMessages({ messages: records, format: 'v2' });
+  log.info('Сохранили исходящие Wazzup сообщения в память', { count: records.length });
 };
 
 type AssistantUiMessage = {
@@ -298,7 +447,7 @@ const processInboundMessages = async ({
         {
           memory: {
             thread: message.chatId,
-            resource: 'wazzup',
+            resource: WAZZUP_RESOURCE_ID,
           },
           runId: `wazzup-${message.messageId}`,
         },
@@ -381,6 +530,16 @@ export const wazzupWebhookRoute = registerApiRoute(resolveWebhookPath(), {
 
       if (result.type === 'test') {
         return c.json({ ok: true });
+      }
+
+      const agent = mastra?.agents?.baqytAgent ?? baqytAgent;
+      if (agent) {
+        await persistOutboundMessages({
+          messages: result.messages,
+          agent,
+          logger,
+          allowedChatIds: resolveTargetChatIds(),
+        });
       }
 
       return c.json(
