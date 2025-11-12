@@ -17,7 +17,7 @@ const DEFAULT_WEBHOOK_PATH = '/webhooks/wazzup';
 const WAZZUP_RESOURCE_ID = 'wazzup';
 const WAZZUP_SEND_TIMEOUT_MS = parseInt(process.env.WAZZUP_SEND_TIMEOUT_MS ?? '30000', 10);
 const WAZZUP_AGENT_TIMEOUT_MS = parseInt(process.env.WAZZUP_AGENT_TIMEOUT_MS ?? '30000', 10);
-const USE_WAZZUP_QUEUE = process.env.USE_WAZZUP_QUEUE === 'true';
+const USE_WAZZUP_QUEUE = process.env.USE_WAZZUP_QUEUE !== 'false';
 let redisStopFlagService: RedisStopFlagService | null = null;
 let messageQueueService: WazzupMessageQueueService | null = null;
 
@@ -355,7 +355,7 @@ const extractAssistantReplies = async (result: Awaited<ReturnType<Agent['generat
   return replies;
 };
 
-const sendReplyToWazzup = async (payload: WazzupOutboundPayload, logger?: RouteLogger) => {
+const sendReplyViaHttp = async (payload: WazzupOutboundPayload, logger?: RouteLogger) => {
   const log = makeLogger(logger);
 
   if (!WAZZUP_API_TOKEN) {
@@ -363,36 +363,6 @@ const sendReplyToWazzup = async (payload: WazzupOutboundPayload, logger?: RouteL
     return;
   }
 
-  // Если включена очередь - добавляем сообщение в очередь вместо прямой отправки
-  if (USE_WAZZUP_QUEUE) {
-    try {
-      if (!messageQueueService) {
-        messageQueueService = new WazzupMessageQueueService();
-      }
-
-      await messageQueueService.enqueue({
-        channelId: payload.channelId,
-        chatType: payload.chatType,
-        chatId: payload.chatId,
-        text: payload.text,
-        refMessageId: payload.refMessageId,
-      });
-
-      log.info('Сообщение добавлено в очередь Wazzup', {
-        chatId: payload.chatId,
-        textPreview: payload.text?.slice(0, 200),
-      });
-      return;
-    } catch (error) {
-      log.error('Ошибка при добавлении сообщения в очередь', {
-        error: error instanceof Error ? error.stack ?? error.message : error,
-        chatId: payload.chatId,
-      });
-      // Продолжаем с прямой отправкой
-    }
-  }
-
-  // Прямая отправка (если очередь отключена или если ошибка добавления в очередь)
   const { controller, cleanup } = createTimeoutAbortController(WAZZUP_SEND_TIMEOUT_MS);
 
   try {
@@ -448,6 +418,46 @@ const sendReplyToWazzup = async (payload: WazzupOutboundPayload, logger?: RouteL
   } finally {
     cleanup();
   }
+};
+
+const sendReplyToWazzup = async (payload: WazzupOutboundPayload, logger?: RouteLogger) => {
+  const log = makeLogger(logger);
+
+  if (USE_WAZZUP_QUEUE) {
+    try {
+      if (!messageQueueService) {
+        messageQueueService = new WazzupMessageQueueService({ logger });
+      }
+
+      await messageQueueService.enqueue({
+        channelId: payload.channelId,
+        chatType: payload.chatType,
+        chatId: payload.chatId,
+        text: payload.text,
+        refMessageId: payload.refMessageId,
+      });
+
+      log.info('Сообщение добавлено в очередь Wazzup', {
+        chatId: payload.chatId,
+        textPreview: payload.text?.slice(0, 200),
+      });
+      return;
+    } catch (error) {
+      log.error('Ошибка при добавлении сообщения в очередь', {
+        error: error instanceof Error ? error.stack ?? error.message : error,
+        chatId: payload.chatId,
+      });
+
+      // При недоступной очереди отправляем напрямую в фоне, чтобы не блокировать ответ вебхука
+      queueMicrotask(() => {
+        void sendReplyViaHttp(payload, logger);
+      });
+
+      return;
+    }
+  }
+
+  await sendReplyViaHttp(payload, logger);
 };
 
 const processInboundMessages = async ({
