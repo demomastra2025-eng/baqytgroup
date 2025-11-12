@@ -15,6 +15,7 @@ import { scorers as baqytScorers } from './scorers/baqyt-scorer';
 import { postgresStore } from './storage/postgres';
 import { wazzupWebhookRoute } from './server/routes/wazzup-webhook';
 import { macroCrmMcpServer } from './mcp/macrocrm-server';
+import { getWazzupQueueWorker, stopWazzupQueueWorker } from './processors/wazzup-queue-worker';
 
 type MastraLogLevel = (typeof LogLevel)[keyof typeof LogLevel];
 const LOG_LEVELS = new Set<MastraLogLevel>(Object.values(LogLevel) as MastraLogLevel[]);
@@ -62,3 +63,25 @@ export const mastra = new Mastra({
     },
   },
 });
+
+// Инициализируем Wazzup очередь если включена
+if (process.env.USE_WAZZUP_QUEUE === 'true') {
+  try {
+    getWazzupQueueWorker();
+    console.log('[Mastra] Wazzup message queue worker initialized');
+  } catch (error) {
+    console.warn('[Mastra] Failed to initialize Wazzup queue worker', error);
+  }
+}
+
+// Обработка graceful shutdown
+if (typeof process !== 'undefined') {
+  const shutdown = async (signal: string) => {
+    console.log(`[Mastra] Received ${signal}, shutting down gracefully...`);
+    await stopWazzupQueueWorker();
+    process.exit(0);
+  };
+
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+  process.on('SIGINT', () => shutdown('SIGINT'));
+}

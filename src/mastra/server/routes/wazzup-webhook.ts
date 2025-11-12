@@ -10,10 +10,16 @@ import {
 } from '../services/wazzup-webhook-service';
 import { WazzupMediaService } from '../services/wazzup-media-service';
 import { RedisStopFlagService } from '../../processors/redis-stop-flag-service';
+import { getWazzupQueueWorker } from '../../processors/wazzup-queue-worker';
+import { WazzupMessageQueueService } from '../../processors/wazzup-message-queue-service';
 
 const DEFAULT_WEBHOOK_PATH = '/webhooks/wazzup';
 const WAZZUP_RESOURCE_ID = 'wazzup';
+const WAZZUP_SEND_TIMEOUT_MS = parseInt(process.env.WAZZUP_SEND_TIMEOUT_MS ?? '30000', 10);
+const WAZZUP_AGENT_TIMEOUT_MS = parseInt(process.env.WAZZUP_AGENT_TIMEOUT_MS ?? '30000', 10);
+const USE_WAZZUP_QUEUE = process.env.USE_WAZZUP_QUEUE === 'true';
 let redisStopFlagService: RedisStopFlagService | null = null;
+let messageQueueService: WazzupMessageQueueService | null = null;
 
 try {
   redisStopFlagService = new RedisStopFlagService();
@@ -79,6 +85,16 @@ type WazzupOutboundPayload = {
   chatId: string;
   text: string;
   refMessageId?: string;
+};
+
+const createTimeoutAbortController = (timeoutMs: number): { controller: AbortController; cleanup: () => void } => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  
+  return {
+    controller,
+    cleanup: () => clearTimeout(timeoutId),
+  };
 };
 
 const shouldHandleMessage = (message: WazzupMessage, allowedChatIds: string[]) => {
@@ -347,12 +363,45 @@ const sendReplyToWazzup = async (payload: WazzupOutboundPayload, logger?: RouteL
     return;
   }
 
+  // Если включена очередь - добавляем сообщение в очередь вместо прямой отправки
+  if (USE_WAZZUP_QUEUE) {
+    try {
+      if (!messageQueueService) {
+        messageQueueService = new WazzupMessageQueueService();
+      }
+
+      await messageQueueService.enqueue({
+        channelId: payload.channelId,
+        chatType: payload.chatType,
+        chatId: payload.chatId,
+        text: payload.text,
+        refMessageId: payload.refMessageId,
+      });
+
+      log.info('Сообщение добавлено в очередь Wazzup', {
+        chatId: payload.chatId,
+        textPreview: payload.text?.slice(0, 200),
+      });
+      return;
+    } catch (error) {
+      log.error('Ошибка при добавлении сообщения в очередь', {
+        error: error instanceof Error ? error.stack ?? error.message : error,
+        chatId: payload.chatId,
+      });
+      // Продолжаем с прямой отправкой
+    }
+  }
+
+  // Прямая отправка (если очередь отключена или если ошибка добавления в очередь)
+  const { controller, cleanup } = createTimeoutAbortController(WAZZUP_SEND_TIMEOUT_MS);
+
   try {
     log.info('Отправляем ответ в Wazzup', {
       chatId: payload.chatId,
       channelId: payload.channelId,
       refMessageId: payload.refMessageId,
       textPreview: payload.text?.slice(0, 200),
+      timeoutMs: WAZZUP_SEND_TIMEOUT_MS,
     });
 
     const response = await fetch(WAZZUP_MESSAGE_URL, {
@@ -362,6 +411,7 @@ const sendReplyToWazzup = async (payload: WazzupOutboundPayload, logger?: RouteL
         Authorization: `Bearer ${WAZZUP_API_TOKEN}`,
       },
       body: JSON.stringify(payload),
+      signal: controller.signal,
     });
 
     if (!response.ok) {
@@ -383,10 +433,20 @@ const sendReplyToWazzup = async (payload: WazzupOutboundPayload, logger?: RouteL
       messageId: payload.refMessageId,
     });
   } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      log.error('Таймаут при отправке ответа в Wazzup', {
+        chatId: payload.chatId,
+        timeoutMs: WAZZUP_SEND_TIMEOUT_MS,
+      });
+      return;
+    }
+
     log.error('Ошибка при отправке ответа в Wazzup', {
       error: error instanceof Error ? error.stack ?? error.message : error,
       chatId: payload.chatId,
     });
+  } finally {
+    cleanup();
   }
 };
 
@@ -429,29 +489,37 @@ const processInboundMessages = async ({
         messageId: message.messageId,
         chatId: message.chatId,
         text: userText,
+        timeoutMs: WAZZUP_AGENT_TIMEOUT_MS,
       });
 
-      const agentResult = await agent.generate(
-        [
-          {
-            role: 'user',
-            content: [{ type: 'text', text: userText }],
-            metadata: {
-              userId: message.chatId,
-              wazzupMessageId: message.messageId,
-              wazzupChannelId: message.channelId,
-              wazzupChatType: message.chatType,
+      const { controller, cleanup } = createTimeoutAbortController(WAZZUP_AGENT_TIMEOUT_MS);
+
+      let agentResult;
+      try {
+        agentResult = await agent.generate(
+          [
+            {
+              role: 'user',
+              content: [{ type: 'text', text: userText }],
+              metadata: {
+                userId: message.chatId,
+                wazzupMessageId: message.messageId,
+                wazzupChannelId: message.channelId,
+                wazzupChatType: message.chatType,
+              },
             },
+          ],
+          {
+            memory: {
+              thread: message.chatId,
+              resource: WAZZUP_RESOURCE_ID,
+            },
+            runId: `wazzup-${message.messageId}`,
           },
-        ],
-        {
-          memory: {
-            thread: message.chatId,
-            resource: WAZZUP_RESOURCE_ID,
-          },
-          runId: `wazzup-${message.messageId}`,
-        },
-      );
+        );
+      } finally {
+        cleanup();
+      }
 
       const replies = await extractAssistantReplies(agentResult);
       log.info('Ответы BaqytAgent перед отправкой в Wazzup', {
@@ -479,6 +547,15 @@ const processInboundMessages = async ({
         );
       }
     } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        log.error('Таймаут при обработке сообщения агентом', {
+          error: 'Agent processing timeout exceeded',
+          messageId: message.messageId,
+          timeoutMs: WAZZUP_AGENT_TIMEOUT_MS,
+        });
+        return;
+      }
+
       log.error('Ошибка при обработке сообщения Wazzup агентом', {
         error: error instanceof Error ? error.stack ?? error.message : error,
         messageId: message.messageId,
