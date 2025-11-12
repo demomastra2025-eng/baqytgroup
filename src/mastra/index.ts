@@ -64,8 +64,8 @@ export const mastra = new Mastra({
   },
 });
 
-// Инициализируем Wazzup очередь если включена
-if (process.env.USE_WAZZUP_QUEUE === 'true') {
+// Инициализируем Wazzup очередь если включена (по умолчанию включена)
+if (process.env.USE_WAZZUP_QUEUE !== 'false') {
   try {
     getWazzupQueueWorker();
     console.log('[Mastra] Wazzup message queue worker initialized');
