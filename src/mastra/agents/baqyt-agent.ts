@@ -2,8 +2,7 @@ import { Agent } from '@mastra/core/agent';
 import type { MastraMessageV2 } from '@mastra/core/agent/message-list';
 import { Memory } from '@mastra/memory';
 import { fastembed } from '@mastra/fastembed';
-import { ModerationProcessor } from '@mastra/core/processors';
-import { BAQYT_MODERATION_MODEL_ID, BAQYT_PRIMARY_MODEL_ID, makeLanguageModel } from '../config/models';
+import { BAQYT_PRIMARY_MODEL_ID, makeLanguageModel } from '../config/models';
 import { RedisBatchingProcessor } from '../processors/redis-batching-processor';
 import { RedisStopProcessor } from '../processors/redis-stop-processor';
 import { postgresStore, postgresVectorStore } from '../storage/postgres';
@@ -23,17 +22,10 @@ export const baqytAgent = new Agent({
       keyPrefix: 'baqyt:input-stop',
       userIdResolver: resolveConversationId,
     }),
-    new RedisBatchingProcessor({
-    keyPrefix: 'baqyt:input-batch',
-    userIdResolver: resolveConversationId,
-     }),
-   new ModerationProcessor({
-      model: makeLanguageModel(BAQYT_MODERATION_MODEL_ID),
-      categories: ['hate', 'harassment', 'violence'],
-      threshold: 0.7,
-      strategy: 'block',
-      instructions: 'Detect and flag inappropriate content in user messages',
-    }),
+     new RedisBatchingProcessor({
+     keyPrefix: 'baqyt:input-batch',
+     userIdResolver: resolveConversationId,
+      }),
   ],
   instructions: `
 SYSTEM PROMPT
@@ -82,7 +74,7 @@ SYSTEM PROMPT
     options: {
       lastMessages: 6,
       workingMemory: {
-        enabled: false,
+        enabled: true,
         scope: 'thread',
         template: `# User Profile
 - **Name**:
